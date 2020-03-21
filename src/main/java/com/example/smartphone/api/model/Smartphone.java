@@ -35,7 +35,7 @@ public class Smartphone {
 	 * Código de identificação do celular, composto por uma sequência alfanúmerica
 	 * única de 8 dígitos.
 	 */
-	@Column(name = "code", length = 8, nullable = false, unique = true, updatable = false)
+	@Column(name = "code", length = 8, nullable = false, unique = true)
 	private String code;
 
 	/**
