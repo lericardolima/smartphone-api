@@ -68,8 +68,8 @@ public class SmartphoneRestRepositoryTest {
 		mvc.perform(MockMvcRequestBuilders.get("/smartphones")
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$._embedded.smartphone").exists())
-			.andExpect(jsonPath("$._embedded.smartphone").isArray())
+			.andExpect(jsonPath("$._embedded.smartphones").exists())
+			.andExpect(jsonPath("$._embedded.smartphones").isArray())
 			.andExpect(jsonPath("$.page.totalElements").value(BigDecimal.ONE));
 	}
 
