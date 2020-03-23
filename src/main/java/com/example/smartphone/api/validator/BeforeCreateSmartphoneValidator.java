@@ -73,7 +73,7 @@ public class BeforeCreateSmartphoneValidator implements Validator {
 	}
 
 	private boolean checkIfNegative(Float value) {
-		return value <= 0;
+		return value < 0;
 	}
 
 	private boolean checkIfNull(Object obj) {
