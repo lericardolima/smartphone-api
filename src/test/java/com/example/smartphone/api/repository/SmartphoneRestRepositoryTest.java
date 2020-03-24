@@ -157,25 +157,6 @@ public class SmartphoneRestRepositoryTest {
 			.andExpect(content().string(Matchers.containsString("\"property\":\"endDate\"")))
 			.andExpect(content().string(Matchers.containsString("\"message\":\"A data final da venda deve não deve ser anterior à data de início.\"")));
 
-		MockHttpServletRequestBuilder duplicatedCodePostRequest = MockMvcRequestBuilders.post("/smartphones")
-		.accept(MediaType.APPLICATION_JSON)
-		.characterEncoding(StandardCharsets.UTF_8.name())
-		.content("{" + 
-				"  \"code\": \"ABC12345\"," + 
-				"  \"model\": \"Smart Plus II\"," + 
-				"  \"price\": 2599.99," + 
-				"  \"brand\": \"SmartPhone Inc.\"," + 
-				"  \"photo\": \"https://www.niehs.nih.gov/health/assets/images/cell_phones.jpg\"," + 
-				"  \"startDate\": \"2021-01-01\"," + 
-				"  \"endDate\": \"2022-01-01\"," + 
-				"  \"color\": \"GOLD\"" + 
-				"}");
-
-		mvc.perform(duplicatedCodePostRequest)
-			.andExpect(status().isConflict())
-			.andExpect(content().encoding(StandardCharsets.UTF_8.name()))
-			.andExpect(jsonPath("$.message").value("Código de identificação já está sendo usado."));
-		
 		MockHttpServletRequestBuilder successPostRequest = MockMvcRequestBuilders.post("/smartphones")
 			.accept(MediaType.APPLICATION_JSON)
 			.characterEncoding(StandardCharsets.UTF_8.name())

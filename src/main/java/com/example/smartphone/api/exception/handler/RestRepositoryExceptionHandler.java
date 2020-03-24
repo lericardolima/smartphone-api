@@ -12,7 +12,7 @@ public class RestRepositoryExceptionHandler extends ResponseEntityExceptionHandl
 	@ExceptionHandler(ConstraintViolationException.class)
 	protected ResponseEntity<Object> handle(ConstraintViolationException e) {
 
-		if (e.getConstraintName().equals("smartphone_code_key")) {
+		if (e.getConstraintName().equals("code_unique_key")) {
 			SmartphoneCustomError errorResponse = new SmartphoneCustomError("code",
 					"Código de identificação já está sendo usado.", e.getCause().getLocalizedMessage());
 			return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);

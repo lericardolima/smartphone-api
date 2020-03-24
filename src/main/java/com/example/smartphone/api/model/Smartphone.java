@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.example.smartphone.api.enumeration.ColorEnum;
 
@@ -20,14 +21,14 @@ import com.example.smartphone.api.enumeration.ColorEnum;
  * @version 1.0.0
  */
 @Entity
-@Table(name = "smartphone")
+@Table(name = "smartphone", uniqueConstraints = @UniqueConstraint(name = "code_unique_key", columnNames = "code"))
 public class Smartphone {
 
 	/**
 	 * Chave primária do recurso.
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "smartphone_pk_sequence")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
 
@@ -35,7 +36,7 @@ public class Smartphone {
 	 * Código de identificação do celular, composto por uma sequência alfanúmerica
 	 * única de 8 dígitos.
 	 */
-	@Column(name = "code", length = 8, nullable = false, unique = true)
+	@Column(name = "code", length = 8, nullable = false)
 	private String code;
 
 	/**
