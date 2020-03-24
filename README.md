@@ -1,4 +1,4 @@
-# Smartphone API
+# Smartphone API v1.1.0
 [![Build Status](https://travis-ci.com/lericardolima/smartphone-api.svg?branch=develop)](https://travis-ci.com/lericardolima/smartphone-api)
 
 API RESTful criada para o projeto Smartphone, um sistema para venda de smartphones.
