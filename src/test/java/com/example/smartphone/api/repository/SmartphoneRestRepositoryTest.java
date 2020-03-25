@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Locale;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -35,6 +37,9 @@ public class SmartphoneRestRepositoryTest {
 
 	@Autowired
 	private MockMvc mvc;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@Autowired
 	private SmartphoneRestRepository smartphoneRepository;
@@ -109,21 +114,21 @@ public class SmartphoneRestRepositoryTest {
 			.andExpect(content().encoding(StandardCharsets.UTF_8.name()))
 			.andExpect(jsonPath("$.errors").exists())
 			.andExpect(content().string(Matchers.containsString("\"property\":\"code\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informado o código do celular.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.code.validation.not.empty")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"model\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informado o modelo do celular.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.model.validation.not.empty")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"price\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informado o preço do celular.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.price.validation.not.empty")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"brand\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informado o nome da marca do celular.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.brand.validation.not.empty")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"photo\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informado a URL da imagem do celular.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.photo.validation.not.empty")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"startDate\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informada a data de início da venda do celular.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.start_date.validation.not.empty")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"endDate\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informada a data final da venda do celular.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.end_date.validation.not.empty")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"color\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"Deve ser informada a cor do celular.\"")));
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.color.validation.not.empty")))));
 		
 		MockHttpServletRequestBuilder forbiddenValuesPostRequest = MockMvcRequestBuilders.post("/smartphones")
 			.accept(MediaType.APPLICATION_JSON)
@@ -143,19 +148,19 @@ public class SmartphoneRestRepositoryTest {
 			.andExpect(content().encoding(StandardCharsets.UTF_8.name()))
 			.andExpect(jsonPath("$.errors").exists())
 			.andExpect(content().string(Matchers.containsString("\"property\":\"code\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"O código do celular deve ter 8 caracteres.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.code.validation.length")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"model\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"O modelo do celular deve ter entre 2 e 255 caracteres.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.model.validation.length")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"price\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"O preço não deve ser menor que 0.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.price.validation.not.negative")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"brand\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"O nome da marca deve ter entre 2 e 255 caracteres.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.brand.validation.length")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"photo\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"A URL da imagem deve ter entre 2 e 255 caracteres.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.photo.validation.length")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"startDate\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"A data de início da venda não deve ser anterior à 25/12/2018.\"")))
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.start_date.validation.invalid.value")))))
 			.andExpect(content().string(Matchers.containsString("\"property\":\"endDate\"")))
-			.andExpect(content().string(Matchers.containsString("\"message\":\"A data final da venda deve não deve ser anterior à data de início.\"")));
+			.andExpect(content().string(Matchers.containsString(String.format("\"message\":\"%s\"", getMessage("smartphone.end_date.validation.invalid.value")))));
 
 		MockHttpServletRequestBuilder successPostRequest = MockMvcRequestBuilders.post("/smartphones")
 			.accept(MediaType.APPLICATION_JSON)
@@ -176,7 +181,7 @@ public class SmartphoneRestRepositoryTest {
 			.andExpect(content().encoding(StandardCharsets.UTF_8.name()))
 			.andExpect(jsonPath("$.errors").doesNotExist());
 	}
-	
+
 	@Test
 	public void testDeleteSmartphone() throws Exception {
 
@@ -187,5 +192,9 @@ public class SmartphoneRestRepositoryTest {
 
 		mvc.perform(MockMvcRequestBuilders.delete("/smartphones/" + id))
 			.andExpect(status().isNotFound());
+	}
+
+	private String getMessage(String key) {
+		return messageSource.getMessage(key, null, Locale.US);
 	}
 }
