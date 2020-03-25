@@ -3,7 +3,6 @@
 
 API RESTful criada para o projeto Smartphone, um sistema para venda de smartphones.
 
----
 ### Ferramentas
 
 *  [Java](https://www.java.com/pt_BR/)
@@ -16,10 +15,19 @@ API RESTful criada para o projeto Smartphone, um sistema para venda de smartphon
 *  [JUnit](https://junit.org/junit5/)
 *  [Travis CI](https://travis-ci.com/)
 *  [Heroku](https://dashboard.heroku.com/)
+*  [Thymeleaf](https://www.thymeleaf.org/)
 ---
-### Heroku
+#### Heroku
 
-  Smartphone API está publicado no [Heroku](http://smartphone-api.herokuapp.com/api/browser/index.html).
+  O Smartphone API está publicado no [Heroku](http://smartphone-api.herokuapp.com/api/browser/index.html).
+
+#### Internacionalização
+
+  O Smartphone API suporta os idiomas inglês (en-US), português (pt-BR) e espanhol (es-ES) nas mensagens de erro das requisições. Para receber as mensagens em algum destes idiomas, o parâmetro `Accept-Language` deve ser enviado no header das requisições.
+  ```
+  Accept-Language: pt-BR
+  ```
+  Quando não definido, o idioma padrão é o inglês (en-US).
 
 ---
 ### Configuração do ambiente
