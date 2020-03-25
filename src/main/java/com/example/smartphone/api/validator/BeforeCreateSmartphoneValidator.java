@@ -3,12 +3,20 @@ package com.example.smartphone.api.validator;
 import java.time.LocalDate;
 import java.time.Month;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.example.smartphone.api.model.Smartphone;
 
+@Component
 public class BeforeCreateSmartphoneValidator implements Validator {
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -21,51 +29,55 @@ public class BeforeCreateSmartphoneValidator implements Validator {
 		Smartphone smartphone = (Smartphone) target;
 
 		if (checkIfBlank(smartphone.getCode())) {
-			errors.rejectValue("code", null, "Deve ser informado o código do celular.");
+			errors.rejectValue("code", null, getMessage("smartphone.code.validation.not.empty"));
 		} else if (checkLength(smartphone.getCode(), 8, 8)) {
-			errors.rejectValue("code", null, "O código do celular deve ter 8 caracteres.");
+			errors.rejectValue("code", null, getMessage("smartphone.code.validation.length"));
 		}
 
 		if (checkIfBlank(smartphone.getModel())) {
-			errors.rejectValue("model", null, "Deve ser informado o modelo do celular.");
+			errors.rejectValue("model", null, getMessage("smartphone.model.validation.not.empty"));
 		} else if (checkLength(smartphone.getModel(), 2, 255)) {
-			errors.rejectValue("model", null, "O modelo do celular deve ter entre 2 e 255 caracteres.");
+			errors.rejectValue("model", null, getMessage("smartphone.model.validation.length"));
 		}
 
 		if (checkIfNull(smartphone.getPrice())) {
-			errors.rejectValue("price", null, "Deve ser informado o preço do celular.");
+			errors.rejectValue("price", null, getMessage("smartphone.price.validation.not.empty"));
 		} else if (checkIfNegative(smartphone.getPrice())) {
-			errors.rejectValue("price", null, "O preço não deve ser menor que 0.");
+			errors.rejectValue("price", null, getMessage("smartphone.price.validation.not.negative"));
 		}
 
 		if (checkIfBlank(smartphone.getBrand())) {
-			errors.rejectValue("brand", null, "Deve ser informado o nome da marca do celular.");
+			errors.rejectValue("brand", null, getMessage("smartphone.brand.validation.not.empty"));
 		} else if (checkLength(smartphone.getBrand(), 2, 255)) {
-			errors.rejectValue("brand", null, "O nome da marca deve ter entre 2 e 255 caracteres.");
+			errors.rejectValue("brand", null, getMessage("smartphone.brand.validation.length"));
 		}
 
 		if (checkIfBlank(smartphone.getPhoto())) {
-			errors.rejectValue("photo", null, "Deve ser informado a URL da imagem do celular.");
+			errors.rejectValue("photo", null, getMessage("smartphone.photo.validation.not.empty"));
 		} else if (checkLength(smartphone.getPhoto(), 2, 255)) {
-			errors.rejectValue("photo", null, "A URL da imagem deve ter entre 2 e 255 caracteres.");
+			errors.rejectValue("photo", null, getMessage("smartphone.photo.validation.length"));
 		}
 
 		if (checkIfNull(smartphone.getStartDate())) {
-			errors.rejectValue("startDate", null, "Deve ser informada a data de início da venda do celular.");
+			errors.rejectValue("startDate", null, getMessage("smartphone.start_date.validation.not.empty"));
 		} else if (checkIfBefore(smartphone.getStartDate(), LocalDate.of(2018, Month.DECEMBER, 25))) {
-			errors.rejectValue("startDate", null, "A data de início da venda não deve ser anterior à 25/12/2018.");
+			errors.rejectValue("startDate", null, getMessage("smartphone.start_date.validation.invalid.value"));
 		}
 
 		if (checkIfNull(smartphone.getEndDate())) {
-			errors.rejectValue("endDate", null, "Deve ser informada a data final da venda do celular.");
+			errors.rejectValue("endDate", null, getMessage("smartphone.end_date.validation.not.empty"));
 		} else if (checkIfNull(smartphone.getStartDate())
 				|| checkIfBefore(smartphone.getEndDate(), smartphone.getStartDate())) {
-			errors.rejectValue("endDate", null, "A data final da venda deve não deve ser anterior à data de início.");
+			errors.rejectValue("endDate", null, getMessage("smartphone.end_date.validation.invalid.value"));
 		}
 
 		if (checkIfNull(smartphone.getColor())) {
-			errors.rejectValue("color", null, "Deve ser informada a cor do celular.");
+			errors.rejectValue("color", null, getMessage("smartphone.color.validation.not.empty"));
 		}
+	}
+
+	private String getMessage(String key) {
+		return messageSource.getMessage(key, null, LocaleContextHolder.getLocale());
 	}
 
 	private boolean checkIfBefore(LocalDate date, LocalDate limit) {
