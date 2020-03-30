@@ -16,6 +16,7 @@ API RESTful criada para o projeto Smartphone, um sistema para venda de smartphon
 *  [Travis CI](https://travis-ci.com/)
 *  [Heroku](https://dashboard.heroku.com/)
 *  [Thymeleaf](https://www.thymeleaf.org/)
+*  [Docker](https://www.docker.com/)
 ---
 #### Heroku
 
@@ -36,16 +37,16 @@ Siga as instruções para configurar o ambiente de desenvolvimento.
 
 #### Banco de dados
 
-  O Smartphone API lê as configurações de conexão com o banco de dados nas variáveis de ambiente.
+  O Smartphone API lê as configurações de conexão com o banco de dados nas variáveis de ambiente. O nome do banco deve ser `smartphonedb`.
   ```
-  DATABASE_URL=jdbc:postgresql://localhost:5432/postgres
+  DATABASE_URL=localhost:5432
   DATABASE_USERNAME=postgres
   DATABASE_PASSWORD=postgres
   ``` 
 
   Também é possível alterar as configurações no arquivo `application.properties`:
   ```
-  spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+  spring.datasource.url=jdbc:postgresql://localhost:5432/smartphonedb
   spring.datasource.username=postgres
   spring.datasource.password=postgres
   ``` 
@@ -72,8 +73,19 @@ Siga as instruções para configurar o ambiente de desenvolvimento.
   ```
   ./gradlew bootWar
   ```
-  Este comando deve gerar um arquivo .war na pasta `biuld/libs`
-  
+  Este comando deve gerar um arquivo .war na pasta `biuld/libs`.
+
+#### Executar em produção
+
+  Execute o perfil de produção com Docker:
+  ```
+  docker-compose up
+  ```
+  Ou no .war gerado a partir do build do gradle:
+  ```
+  java -Dspring.profiles.active=prod -jar build/libs/smartphone-api-{versão}.war
+  ```
+
   ## Contribuição
   
    **Ricardo de Lima Rocha**

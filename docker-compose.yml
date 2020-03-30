@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  smartphonedb-postgres:
+    image: 'postgres:12-alpine'
+    container_name: smartphonedb-postgres
+    volumes:
+      - smartphonedb-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=smartphonedb
+      - POSTGRES_USER=smartphone
+      - POSTGRES_PASSWORD=smartphone
+
+  smartphone-api:
+    build: ./
+    container_name: smartphone-api
+    environment:
+      - DATABASE_URL=smartphonedb-postgres
+      - DATABASE_USERNAME=smartphone
+      - DATABASE_PASSWORD=smartphone
+    ports:
+      - 8080:8080
+    links:
+      - smartphonedb-postgres
+
+volumes:
+  smartphonedb-data:
