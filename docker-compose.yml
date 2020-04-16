@@ -20,6 +20,7 @@ services:
       - DATABASE_URL=smartphonedb-postgres
       - DATABASE_USERNAME=smartphone
       - DATABASE_PASSWORD=smartphone
+      - DATABASE_NAME=smartphonedb
     ports:
       - 8080:8080
     links:
